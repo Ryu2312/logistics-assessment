@@ -1,0 +1,11 @@
+{
+  "name": "@probo/prettier-config",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "prettier.config.cjs"
+  ],
+  "exports": {
+    ".": "./prettier.config.cjs"
+  }
+}
