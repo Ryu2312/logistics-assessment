@@ -11,10 +11,11 @@ export function Button({
   variant = 'secondary',
   size = 'md',
   className = '',
+  disabled = false,
   ...props
 }: ButtonProps) {
   const baseClasses =
-    'font-medium rounded-lg transition-colors cursor-pointer focus:ring-blue-500 focus:border-blue-500';
+    'font-medium rounded-lg transition-colors focus:ring-blue-500 focus:border-blue-500';
 
   const variantClasses = {
     primary: 'bg-slate-800 text-white hover:bg-slate-700',
@@ -28,9 +29,14 @@ export function Button({
     lg: 'px-6 py-3 text-base',
   };
 
+  const disabledClasses = disabled
+    ? 'opacity-50 cursor-not-allowed hover:bg-inherit'
+    : 'cursor-pointer';
+
   return (
     <button
-      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
+      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${disabledClasses} ${className}`}
+      disabled={disabled}
       {...props}
     >
       {children}

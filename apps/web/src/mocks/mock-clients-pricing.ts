@@ -9,20 +9,21 @@ export const VOLUME_COLUMNS = [
     'T_30',
 ] as const;
 
-export const OPERATIONS = ['Logística', 'Flete', 'Distribución', 'Carga'] as const;
+export const PLANTS = ['Perú', 'México', 'Colombia'] as const;
 
 export type VolumeKey = (typeof VOLUME_COLUMNS)[number];
-export type OperationType = (typeof OPERATIONS)[number];
+export type PlantType = (typeof PLANTS)[number];
 
 export type Operation = {
     id: string;
-    name: OperationType | string;
+    name: string;
     margins: Record<VolumeKey, number>;
 };
 
-export const mockOperations: Operation[] = [
+
+const peru_operations: Operation[] = [
     {
-        id: 'op-logistica',
+        id: 'op-peru-1',
         name: 'Logística',
         margins: {
             KG_300: 15,
@@ -36,7 +37,7 @@ export const mockOperations: Operation[] = [
         },
     },
     {
-        id: 'op-flete',
+        id: 'op-peru-2',
         name: 'Flete',
         margins: {
             KG_300: 10,
@@ -50,7 +51,7 @@ export const mockOperations: Operation[] = [
         },
     },
     {
-        id: 'op-distribucion',
+        id: 'op-peru-3',
         name: 'Distribución',
         margins: {
             KG_300: 18,
@@ -63,9 +64,12 @@ export const mockOperations: Operation[] = [
             T_30: 13,
         },
     },
+];
+
+const mexico_operations: Operation[] = [
     {
-        id: 'op-carga',
-        name: 'Carga',
+        id: 'op-mexico-1',
+        name: 'Logística',
         margins: {
             KG_300: 12,
             KG_500: 12,
@@ -77,4 +81,43 @@ export const mockOperations: Operation[] = [
             T_30: 8,
         },
     },
+    {
+        id: 'op-mexico-2',
+        name: 'Carga',
+        margins: {
+            KG_300: 14,
+            KG_500: 14,
+            T_1: 13,
+            T_3: 13,
+            T_5: 12,
+            T_10: 12,
+            T_20: 11,
+            T_30: 10,
+        },
+    },
 ];
+
+const colombia_operations: Operation[] = [
+    {
+        id: 'op-colombia-1',
+        name: 'Transporte',
+        margins: {
+            KG_300: 16,
+            KG_500: 16,
+            T_1: 15,
+            T_3: 15,
+            T_5: 14,
+            T_10: 13,
+            T_20: 12,
+            T_30: 11,
+        },
+    },
+];
+
+export const mockOperationsByPlant = new Map<PlantType, Operation[]>([
+    ['Perú', peru_operations],
+    ['México', mexico_operations],
+    ['Colombia', colombia_operations],
+]);
+
+export const mockOperations = peru_operations;

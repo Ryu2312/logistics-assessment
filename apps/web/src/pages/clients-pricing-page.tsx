@@ -1,44 +1,49 @@
 import { useState } from 'react';
-import { mockOperations } from '../mocks/mock-clients-pricing';
-import type { Operation } from '../mocks/mock-clients-pricing';
+import { useOperations } from '../context/OperationsContext';
+import type { PlantType } from '../mocks/mock-clients-pricing';
 import { Sidebar } from '../components/Sidebar';
 import { Header } from '../components/Header';
 import { Table } from '../components/Table';
+import { AddOperationModal } from '../components/Modal/AddOperationModal';
 
 export function ClientsPricingPage() {
-  const [selectedPlant, setSelectedPlant] = useState('Perú');
-  const [searchValue, setSearchValue] = useState('');
-  const [operations, setOperations] = useState<Operation[]>(mockOperations);
+  const {
+    filteredOperations,
+    searchValue,
+    selectedPlant,
+    setSearchValue,
+    setSelectedPlant,
+    addOperation,
+  } = useOperations();
 
-  const handleAddOperation = () => {
-    const newOperation: Operation = {
-      id: `op-new-${Date.now()}`,
-      name: 'Nueva Operación',
-      margins: {
-        KG_300: 10,
-        KG_500: 10,
-        T_1: 10,
-        T_3: 10,
-        T_5: 10,
-        T_10: 10,
-        T_20: 10,
-        T_30: 10,
-      },
-    };
-    setOperations([...operations, newOperation]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddOperation = (name: string) => {
+    addOperation(name);
+  };
+
+  const handlePlantChange = (plant: PlantType) => {
+    setSelectedPlant(plant);
+    setSearchValue(''); // Limpiar búsqueda al cambiar planta
   };
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50 font-sans text-slate-700 antialiased">
-      <Sidebar selectedPlant={selectedPlant} onPlantChange={setSelectedPlant} />
+      <Sidebar selectedPlant={selectedPlant as PlantType} onPlantChange={handlePlantChange} />
 
       <main className="flex-1 flex flex-col overflow-hidden">
         <Header searchValue={searchValue} onSearchChange={setSearchValue} />
 
         <section className="flex-1 overflow-auto p-6">
-          <Table rows={operations} onAddOperation={handleAddOperation} />
+          <Table rows={filteredOperations} onAddOperation={() => setIsModalOpen(true)} />
         </section>
       </main>
+
+      <AddOperationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAdd={handleAddOperation}
+      />
     </div>
   );
 }
