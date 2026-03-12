@@ -10,13 +10,13 @@ datasource db {
 
 model Plant {
   id      String            @id @default(uuid())
-  name    String
+  name    String            @unique
   margins OperationMargin[]
 }
 
 model Operation {
   id      String            @id @default(uuid())
-  name    String
+  name    String            @unique 
   margins OperationMargin[]
 }
 
@@ -27,8 +27,8 @@ model OperationMargin {
   volume      VolumeRange
   margin      Float
 
-  plant       Plant     @relation(fields: [plantId], references: [id])
-  operation   Operation @relation(fields: [operationId], references: [id])
+  plant       Plant     @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  operation   Operation @relation(fields: [operationId], references: [id], onDelete: Cascade)
 
   @@unique([plantId, operationId, volume])
 }
