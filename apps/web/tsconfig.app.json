@@ -1,0 +1,8 @@
+{
+  "extends": "@probo/typescript/tsconfig.web.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["vite/client"]
+  },
+  "include": ["src"]
+}
