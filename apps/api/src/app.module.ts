@@ -6,6 +6,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 import { PrismaModule } from './prisma/prisma.module';
 import { MarginsModule } from './modules/margins/margins.module';
+import { PlantsModule } from './modules/plants/plants.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { MarginsModule } from './modules/margins/margins.module';
       introspection: true,
     }),
     PrismaModule,
-    MarginsModule
+    MarginsModule,
+    PlantsModule,
   ],
 })
 export class AppModule { }

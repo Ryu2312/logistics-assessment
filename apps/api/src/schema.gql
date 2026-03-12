@@ -1,0 +1,45 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Mutation {
+  upsertOperationMargins(input: UpsertOperationMarginsInput!): [OperationMarginModel!]!
+}
+
+type OperationMarginModel {
+  margins: [VolumeMarginModel!]!
+  operationId: ID!
+  operationName: String!
+}
+
+type Query {
+  plantOperations(plantId: String!): [OperationMarginModel!]!
+}
+
+input UpsertOperationMarginsInput {
+  margins: [VolumeMarginInput!]!
+  operationId: ID!
+  plantId: ID!
+}
+
+input VolumeMarginInput {
+  margin: Float!
+  volume: VolumeRange!
+}
+
+type VolumeMarginModel {
+  alert: Boolean!
+  margin: Float!
+  volume: VolumeRange!
+}
+
+enum VolumeRange {
+  KG_300
+  KG_500
+  T_1
+  T_3
+  T_5
+  T_10
+  T_20
+  T_30
+}
