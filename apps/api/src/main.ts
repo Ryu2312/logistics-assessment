@@ -4,6 +4,8 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { ConfigService } from '@nestjs/config';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -15,12 +17,13 @@ async function bootstrap() {
     },
   );
 
+  const config = app.get(ConfigService);
   const logger = new Logger('Bootstrap');
 
   app.enableShutdownHooks();
 
   app.enableCors({
-    origin: true,
+    origin: config.get<string>('CORS_ORIGIN')?.split(',') ?? true,
     credentials: true,
   });
 
@@ -33,8 +36,8 @@ async function bootstrap() {
     }),
   );
 
-  const port = 3000;
-  const host = '0.0.0.0';
+  const port = Number(config.get<string>('PORT') ?? 3000);
+  const host = config.get<string>('HOST') ?? '0.0.0.0';
 
   await app.listen(port, host);
 
