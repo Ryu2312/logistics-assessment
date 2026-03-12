@@ -40,7 +40,6 @@ input VolumeMarginInput {
 }
 
 type VolumeMarginModel {
-  alert: Boolean!
   margin: Float!
   volume: VolumeRange!
 }

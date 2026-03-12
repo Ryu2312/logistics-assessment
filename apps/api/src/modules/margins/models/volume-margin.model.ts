@@ -1,5 +1,5 @@
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { VolumeRange } from 'prisma/generated/client';
+import { VolumeRange } from 'prisma/generated/client/client';
 
 registerEnumType(VolumeRange, {
     name: 'VolumeRange',

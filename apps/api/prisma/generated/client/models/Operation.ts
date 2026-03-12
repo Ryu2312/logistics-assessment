@@ -169,12 +169,12 @@ export type OperationOrderByWithRelationInput = {
 
 export type OperationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  name?: string
   AND?: Prisma.OperationWhereInput | Prisma.OperationWhereInput[]
   OR?: Prisma.OperationWhereInput[]
   NOT?: Prisma.OperationWhereInput | Prisma.OperationWhereInput[]
-  name?: Prisma.StringFilter<"Operation"> | string
   margins?: Prisma.OperationMarginListRelationFilter
-}, "id">
+}, "id" | "name">
 
 export type OperationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
