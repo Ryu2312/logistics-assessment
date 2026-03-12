@@ -1,0 +1,29 @@
+# Dependencias
+node_modules/
+
+# Builds genéricos
+dist/
+
+# Cache y tooling
+.turbo/
+.cache/
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
