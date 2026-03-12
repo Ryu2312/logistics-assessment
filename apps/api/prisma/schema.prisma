@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Plant {
+  id      String            @id @default(uuid())
+  name    String
+  margins OperationMargin[]
+}
+
+model Operation {
+  id      String            @id @default(uuid())
+  name    String
+  margins OperationMargin[]
+}
+
+model OperationMargin {
+  id          String   @id @default(uuid())
+  plantId     String
+  operationId String
+  volume      VolumeRange
+  margin      Float
+
+  plant       Plant     @relation(fields: [plantId], references: [id])
+  operation   Operation @relation(fields: [operationId], references: [id])
+
+  @@unique([plantId, operationId, volume])
+}
+
+enum VolumeRange {
+  KG_300
+  KG_500
+  T_1
+  T_3
+  T_5
+  T_10
+  T_20
+  T_30
+}
