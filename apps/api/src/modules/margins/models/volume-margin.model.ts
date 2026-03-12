@@ -12,7 +12,4 @@ export class VolumeMarginModel {
 
     @Field(() => Float)
     margin!: number;
-
-    @Field(() => Boolean)
-    alert!: boolean;
 }

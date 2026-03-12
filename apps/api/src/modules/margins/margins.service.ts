@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { UpsertOperationMarginsInput } from './inputs/upsert-operation-margins.input';
 
@@ -23,18 +24,17 @@ export class MarginsService {
             {
                 operationId: string;
                 operationName: string;
-                margins: { volume: any; margin: number; alert: boolean }[];
+                margins: { volume: string; margin: number }[];
             }
         >();
 
         for (const row of rows) {
-            const existing = grouped.get(row.operationId);
-
             const marginItem = {
                 volume: row.volume,
                 margin: row.margin,
-                alert: row.margin <= 5,
             };
+
+            const existing = grouped.get(row.operationId);
 
             if (!existing) {
                 grouped.set(row.operationId, {
@@ -52,6 +52,8 @@ export class MarginsService {
     }
 
     async upsertOperationMargins(input: UpsertOperationMarginsInput) {
+        this.validateMargins(input);
+
         const { plantId, operationId, margins } = input;
 
         await this.prisma.$transaction(
@@ -78,5 +80,15 @@ export class MarginsService {
         );
 
         return this.getPlantOperations(plantId);
+    }
+
+    private validateMargins(input: UpsertOperationMarginsInput) {
+        for (const item of input.margins) {
+            if (item.margin < 5) {
+                throw new BadRequestException(
+                    `Margin for volume ${item.volume} cannot be lower than 5%`,
+                );
+            }
+        }
     }
 }
