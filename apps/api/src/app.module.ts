@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 import { PrismaModule } from './prisma/prisma.module';
+import { MarginsModule } from './modules/margins/margins.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PrismaModule } from './prisma/prisma.module';
       introspection: true,
     }),
     PrismaModule,
+    MarginsModule
   ],
 })
 export class AppModule { }
