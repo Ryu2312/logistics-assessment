@@ -41,8 +41,10 @@ async function bootstrap() {
 
   await app.listen(port, host);
 
-  logger.log(`HTTP running on http://${host}:${port}`);
-  logger.log(`GraphQL endpoint on http://${host}:${port}/graphql`);
+  const url = `http://${host}:${port}`;
+
+  logger.log(`Server running on ${url}`);
+  logger.log(`GraphQL: ${url}/graphql`);
 }
 
 void bootstrap();

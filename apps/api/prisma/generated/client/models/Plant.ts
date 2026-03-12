@@ -169,12 +169,12 @@ export type PlantOrderByWithRelationInput = {
 
 export type PlantWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  name?: string
   AND?: Prisma.PlantWhereInput | Prisma.PlantWhereInput[]
   OR?: Prisma.PlantWhereInput[]
   NOT?: Prisma.PlantWhereInput | Prisma.PlantWhereInput[]
-  name?: Prisma.StringFilter<"Plant"> | string
   margins?: Prisma.OperationMarginListRelationFilter
-}, "id">
+}, "id" | "name">
 
 export type PlantOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

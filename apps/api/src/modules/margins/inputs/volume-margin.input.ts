@@ -1,5 +1,5 @@
 import { Field, Float, InputType } from '@nestjs/graphql';
-import { VolumeRange } from 'prisma/generated/client';
+import { VolumeRange } from 'prisma/generated/client/client';
 
 @InputType()
 export class VolumeMarginInput {
