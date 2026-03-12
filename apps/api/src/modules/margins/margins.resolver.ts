@@ -1,9 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { MarginsService } from './margins.service';
-import { OperationMarginModel } from './models/operation-margin.model';
 import { UpsertOperationMarginsInput } from './inputs/upsert-operation-margins.input';
+import { OperationMarginModel } from './models/operation-margin.model';
 
-@Resolver()
+@Resolver(() => OperationMarginModel)
 export class MarginsResolver {
     constructor(private readonly marginsService: MarginsService) { }
 
