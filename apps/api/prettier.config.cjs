@@ -1,1 +1,1 @@
-module.exports = require("@probo/prettier-config");
+module.exports = require("@logistics-assessment/prettier-config");

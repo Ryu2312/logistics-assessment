@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['@probo/eslint-config/base', 'plugin:@nestjs/recommended'],
+  extends: ['@logistics-assessment/eslint-config/base', 'plugin:@nestjs/recommended'],
   plugins: ['@nestjs'],
   env: {
     node: true,

@@ -1,12 +1,13 @@
 {
-  "extends": "@probo/typescript/tsconfig.node.json",
+  "extends": "@logistics-assessment/typescript/tsconfig.node.json",
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "useDefineForClassFields": false,
-    "rootDir": "src",
-    "outDir": "dist"
-  },
-
-  "include": ["src"]
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
 }
