@@ -12,8 +12,20 @@ type OperationMarginModel {
   operationName: String!
 }
 
+type OperationModel {
+  id: ID!
+  name: String!
+}
+
+type PlantModel {
+  id: ID!
+  name: String!
+}
+
 type Query {
+  operations: [OperationModel!]!
   plantOperations(plantId: String!): [OperationMarginModel!]!
+  plants: [PlantModel!]!
 }
 
 input UpsertOperationMarginsInput {
