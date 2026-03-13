@@ -1,80 +1,62 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { mockOperationsByPlant } from '../mocks/mock-clients-pricing';
-import type { Operation, PlantType } from '../mocks/mock-clients-pricing';
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import type { Operation, OperationsContextType, VolumeRange } from './types';
+import {
+  useCreateOperation,
+  useDeleteOperation,
+  useOperationsQuery,
+  usePlantsQuery,
+} from './hooks';
+import { filterOperations } from './utils';
+import { useUpsertMargin } from './hooks/useOperationsMutations';
 
-interface OperationsContextType {
-  operations: Operation[];
-  filteredOperations: Operation[];
-  searchValue: string;
-  selectedPlant: PlantType;
-
-  setSearchValue: (value: string) => void;
-  setSelectedPlant: (plant: PlantType) => void;
-  addOperation: (name: string) => void;
-  deleteOperation: (id: string) => void;
-  updateOperation: (id: string, operation: Partial<Operation>) => void;
-}
-
-const OperationsContext = createContext<OperationsContextType | undefined>(undefined);
+const OperationsContext = createContext<OperationsContextType | null>(null);
 
 export function OperationsProvider({ children }: { children: ReactNode }) {
-  const [selectedPlant, setSelectedPlant] = useState<PlantType>('Perú');
-  const [operations, setOperations] = useState<Operation[]>([]);
+  const [selectedPlantId, setSelectedPlantId] = useState('');
   const [searchValue, setSearchValue] = useState('');
 
-  useEffect(() => {
-    const plantOperations = mockOperationsByPlant.get(selectedPlant) || [];
-    setOperations([...plantOperations]);
-  }, [selectedPlant]);
+  const { plants, loading: plantsLoading, error: plantsError } = usePlantsQuery();
 
-  const filteredOperations = operations.filter((op) =>
-    op.name.toLowerCase().includes(searchValue.toLowerCase()),
+  useEffect(() => {
+    const plant = plants[0];
+
+    if (!plant) return;
+
+    setSelectedPlantId(plant.id);
+  }, [plants]);
+
+  const {
+    operations,
+    loading: operationsLoading,
+    error: operationsError,
+  } = useOperationsQuery(selectedPlantId);
+  const { createOperation } = useCreateOperation(selectedPlantId);
+  const { deleteOperation } = useDeleteOperation(selectedPlantId);
+  const { upsertMargin } = useUpsertMargin(selectedPlantId);
+
+  const filteredOperations = useMemo(
+    () => filterOperations(operations, searchValue),
+    [operations, searchValue],
   );
 
-  const addOperation = (name: string) => {
-    const newOperation: Operation = {
-      id: `op-${selectedPlant.toLowerCase()}-${Date.now()}`,
-      name,
-      margins: {
-        KG_300: 10,
-        KG_500: 10,
-        T_1: 10,
-        T_3: 10,
-        T_5: 10,
-        T_10: 10,
-        T_20: 10,
-        T_30: 10,
-      },
-    };
-    const newOperations = [...operations, newOperation];
-    setOperations(newOperations);
-    mockOperationsByPlant.set(selectedPlant, newOperations);
-  };
+  const isLoading = plantsLoading || operationsLoading;
 
-  const deleteOperation = (id: string) => {
-    const newOperations = operations.filter((op) => op.id !== id);
-    setOperations(newOperations);
-    mockOperationsByPlant.set(selectedPlant, newOperations);
-  };
-
-  const updateOperation = (id: string, updates: Partial<Operation>) => {
-    const newOperations = operations.map((op) => (op.id === id ? { ...op, ...updates } : op));
-    setOperations(newOperations);
-    mockOperationsByPlant.set(selectedPlant, newOperations);
-  };
+  const error = plantsError?.message || operationsError?.message || null;
 
   return (
     <OperationsContext.Provider
       value={{
-        operations,
-        filteredOperations,
+        plants,
+        operations: filteredOperations,
+        selectedPlantId,
+        setSelectedPlantId,
         searchValue,
-        selectedPlant,
         setSearchValue,
-        setSelectedPlant,
-        addOperation,
+        loading: isLoading,
+        error,
+        createOperation,
         deleteOperation,
-        updateOperation,
+        upsertMargin,
       }}
     >
       {children}
@@ -84,8 +66,10 @@ export function OperationsProvider({ children }: { children: ReactNode }) {
 
 export function useOperations() {
   const context = useContext(OperationsContext);
+
   if (!context) {
     throw new Error('useOperations debe ser usado dentro de OperationsProvider');
   }
+
   return context;
 }

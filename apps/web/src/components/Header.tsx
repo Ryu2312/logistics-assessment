@@ -1,4 +1,3 @@
-import { Button } from './Button';
 import { SearchInput } from './SearchInput';
 
 interface HeaderProps {
@@ -22,9 +21,6 @@ export function Header({ searchValue, onSearchChange }: HeaderProps) {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
           className="icon icon-tabler icons-tabler-outline icon-tabler-search absolute right-6"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />

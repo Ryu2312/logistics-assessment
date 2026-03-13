@@ -1,5 +1,8 @@
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  options: string[];
+  options: {
+    id: string;
+    name: string;
+  }[];
   label?: string;
 }
 
@@ -12,8 +15,8 @@ export function Select({ options, label, className = '', ...props }: SelectProps
         {...props}
       >
         {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
+          <option key={option.id} value={option.id}>
+            {option.name}
           </option>
         ))}
       </select>
