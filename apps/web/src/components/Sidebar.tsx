@@ -1,14 +1,16 @@
 import { MenuItem } from './MenuItem';
 import { Select } from './Select';
-import type { PlantType } from '../mocks/mock-clients-pricing';
-import { PLANTS } from '../mocks/mock-clients-pricing';
 
 interface SidebarProps {
-  selectedPlant: PlantType;
-  onPlantChange: (plant: PlantType) => void;
+  plants: {
+    id: string;
+    name: string;
+  }[];
+  selectedPlantId: string;
+  onPlantChange: (plantId: string) => void;
 }
 
-export function Sidebar({ selectedPlant, onPlantChange }: SidebarProps) {
+export function Sidebar({ plants, selectedPlantId, onPlantChange }: SidebarProps) {
   const menuItems = [
     '1. Precios Base',
     '2. Waste',
@@ -25,9 +27,9 @@ export function Sidebar({ selectedPlant, onPlantChange }: SidebarProps) {
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0">
       <div className="p-4 border-b border-slate-100">
         <Select
-          options={PLANTS as unknown as string[]}
-          value={selectedPlant}
-          onChange={(e) => onPlantChange(e.target.value as PlantType)}
+          options={plants}
+          value={selectedPlantId}
+          onChange={(e) => onPlantChange(e.target.value)}
         />
       </div>
 
