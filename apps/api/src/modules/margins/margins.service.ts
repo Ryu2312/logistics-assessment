@@ -2,53 +2,50 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { UpsertOperationMarginsInput } from './inputs/upsert-operation-margins.input';
+import { v7 } from 'uuid';
 
 @Injectable()
 export class MarginsService {
     constructor(private readonly prisma: PrismaService) { }
 
     async getPlantOperations(plantId: string) {
-        const rows = await this.prisma.operationMargin.findMany({
-            where: { plantId },
-            include: {
-                operation: true,
-            },
-            orderBy: [
-                { operation: { name: 'asc' } },
-                { volume: 'asc' },
-            ],
-        });
+        const [operations, rows] = await Promise.all([
+            this.prisma.operation.findMany({
+                orderBy: { id: 'asc' },
+            }),
+            this.prisma.operationMargin.findMany({
+                where: { plantId },
+                include: {
+                    operation: true,
+                },
+                orderBy: [
+                    { operation: { id: 'asc' } },
+                    { volume: 'asc' },
+                ],
+            }),
+        ]);
 
-        const grouped = new Map<
+        const marginsByOperation = new Map<
             string,
-            {
-                operationId: string;
-                operationName: string;
-                margins: { volume: string; margin: number }[];
-            }
+            { volume: string; margin: number }[]
         >();
 
         for (const row of rows) {
-            const marginItem = {
+            const existing = marginsByOperation.get(row.operationId) ?? [];
+
+            existing.push({
                 volume: row.volume,
                 margin: row.margin,
-            };
+            });
 
-            const existing = grouped.get(row.operationId);
-
-            if (!existing) {
-                grouped.set(row.operationId, {
-                    operationId: row.operationId,
-                    operationName: row.operation.name,
-                    margins: [marginItem],
-                });
-                continue;
-            }
-
-            existing.margins.push(marginItem);
+            marginsByOperation.set(row.operationId, existing);
         }
 
-        return Array.from(grouped.values());
+        return operations.map((operation) => ({
+            operationId: operation.id,
+            operationName: operation.name,
+            margins: marginsByOperation.get(operation.id) ?? [],
+        }));
     }
 
     async upsertOperationMargins(input: UpsertOperationMarginsInput) {
@@ -67,6 +64,7 @@ export class MarginsService {
                         },
                     },
                     create: {
+                        id: v7(),
                         plantId,
                         operationId,
                         volume: item.volume,
