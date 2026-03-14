@@ -43,7 +43,6 @@ export type CreateOperationResponse = {
 
 export type CreateOperationVariables = {
     input: {
-        plantId: string;
         name: string;
     };
 };
@@ -54,8 +53,7 @@ export type DeleteOperationResponse = {
 
 export type DeleteOperationVariables = {
     input: {
-        plantId: string;
-        operationId: string;
+        id: string;
     };
 };
 
