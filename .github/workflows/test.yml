@@ -67,11 +67,11 @@ jobs:
 
       - name: Run backend tests
         working-directory: apps/api
-        run: pnpm test:cov
+        run: pnpm test
 
       - name: Run frontend tests
         working-directory: apps/web
-        run: pnpm test:coverage
+        run: pnpm test
 
       - name: Upload backend coverage
         uses: codecov/codecov-action@v3
