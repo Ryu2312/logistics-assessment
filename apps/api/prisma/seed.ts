@@ -2,6 +2,7 @@ import 'dotenv/config'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient, VolumeRange } from './generated/client/client';
 import { randomInt } from 'crypto';
+import { v7 } from 'uuid';
 
 const prisma = new PrismaClient({
     adapter: new PrismaPg({
@@ -29,7 +30,7 @@ async function main() {
             prisma.plant.upsert({
                 where: { name },
                 update: {},
-                create: { name },
+                create: { name, id: v7() },
             }),
         ),
     );
@@ -39,7 +40,7 @@ async function main() {
             prisma.operation.upsert({
                 where: { name },
                 update: {},
-                create: { name },
+                create: { name, id: v7() },
             }),
         ),
     );
@@ -59,6 +60,7 @@ async function main() {
                         margin: randomInt(5, 31),
                     },
                     create: {
+                        id: v7(),
                         plantId: plant.id,
                         operationId: operation.id,
                         volume,

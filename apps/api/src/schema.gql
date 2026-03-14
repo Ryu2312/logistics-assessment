@@ -2,7 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateOperationInput {
+  name: String!
+}
+
+input DeleteOperationInput {
+  id: ID!
+}
+
 type Mutation {
+  createOperation(input: CreateOperationInput!): OperationMarginModel!
+  deleteOperation(input: DeleteOperationInput!): Boolean!
   upsertOperationMargins(input: UpsertOperationMarginsInput!): [OperationMarginModel!]!
 }
 
@@ -24,7 +34,7 @@ type PlantModel {
 
 type Query {
   operations: [OperationModel!]!
-  plantOperations(plantId: String!): [OperationMarginModel!]!
+  plantOperations(plantId: ID!): [OperationMarginModel!]!
   plants: [PlantModel!]!
 }
 

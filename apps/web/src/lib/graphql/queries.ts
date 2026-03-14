@@ -9,6 +9,15 @@ export const GET_PLANTS = gql`
   }
 `;
 
+export const GET_OPERATIONS = gql`
+  query GetOperations {
+    operations {
+      id
+      name
+    }
+  }
+`;
+
 export const GET_PLANT_OPERATIONS = gql`
   query GetPlantOperations($plantId: ID!) {
     plantOperations(plantId: $plantId) {
@@ -23,12 +32,16 @@ export const GET_PLANT_OPERATIONS = gql`
 `;
 
 export const CREATE_OPERATION = gql`
-  mutation CreateOperation($input: CreateOperationInput!) {
-    createOperation(input: $input) {
-      id
-      name
+ mutation CreateOperation($input: CreateOperationInput!) {
+  createOperation(input: $input) {
+    operationId
+    operationName
+    margins {
+      volume
+      margin
     }
   }
+}
 `;
 
 export const DELETE_OPERATION = gql`

@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { MarginsService } from './margins.service';
 import { UpsertOperationMarginsInput } from './inputs/upsert-operation-margins.input';
 import { OperationMarginModel } from './models/operation-margin.model';
@@ -9,7 +9,7 @@ export class MarginsResolver {
 
     @Query(() => [OperationMarginModel], { name: 'plantOperations' })
     async getPlantOperations(
-        @Args('plantId', { type: () => String }) plantId: string,
+        @Args('plantId', { type: () => ID }) plantId: string,
     ) {
         return this.marginsService.getPlantOperations(plantId);
     }
