@@ -30,3 +30,13 @@ Thumbs.db
 
 #Prisma
 /src/generated/prisma
+
+# Testing & Coverage
+coverage/
+*.lcov
+.nyc_output/
+.vitest/
+
+# Environment
+.env.test
+.env.test.local

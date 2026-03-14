@@ -5,7 +5,10 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "check-types": "turbo run check-types",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "test:cov": "turbo run test:cov test:coverage"
   },
   "packageManager": "pnpm@10.32.1",
   "devDependencies": {
