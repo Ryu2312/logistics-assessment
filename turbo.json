@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalDependencies": ["pnpm-lock.yaml"],
+  "globalDependencies": ["pnpm-lock.yaml", ".env"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
