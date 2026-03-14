@@ -28,7 +28,7 @@ export function transformOperations(
 export function filterOperations(
     operations: Operation[],
     searchValue: string,
-): Operation[] {
+) {
     if (!searchValue) return operations;
 
     return operations.filter((op) =>

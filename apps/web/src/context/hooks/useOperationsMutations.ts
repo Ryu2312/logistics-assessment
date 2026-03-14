@@ -7,10 +7,9 @@ import {
 } from '../../lib/graphql/queries';
 import type { CreateOperationResponse, CreateOperationVariables, DeleteOperationResponse, DeleteOperationVariables, Margin, UpsertOperationMarginsResponse, UpsertOperationMarginsVariables, VolumeRange } from '../types';
 import { GetPlantOperationsResponse } from './useOperationsQueries';
-import { ApolloClient } from '@apollo/client';
 
 export function useCreateOperation(plantId: string) {
-    const [mutation, { loading }] = useMutation<
+    const [mutation] = useMutation<
         CreateOperationResponse,
         CreateOperationVariables
     >(CREATE_OPERATION, {
@@ -18,7 +17,7 @@ export function useCreateOperation(plantId: string) {
             if (!data) return;
 
             const created = data.createOperation;
-
+            console.log(created);
             const existing = cache.readQuery<GetPlantOperationsResponse>({
                 query: GET_PLANT_OPERATIONS,
                 variables: { plantId },
@@ -43,39 +42,33 @@ export function useCreateOperation(plantId: string) {
     });
 
     const createOperation = async (name: string) => {
-        if (!plantId) {
-            throw new Error('No hay una planta seleccionada');
-        }
+
 
         await mutation({
             variables: {
                 input: {
-                    plantId,
                     name,
                 },
             },
         });
     };
 
-    return { createOperation, loading };
+
+    return { createOperation };
 }
 
 export function useDeleteOperation(plantId: string) {
-    const [mutation, { loading }] = useMutation<
+    const [mutation] = useMutation<
         DeleteOperationResponse,
         DeleteOperationVariables
     >(DELETE_OPERATION);
 
-    const deleteOperation = async (operationId: string) => {
-        if (!plantId) {
-            throw new Error('No hay una planta seleccionada');
-        }
+    const deleteOperation = async (id: string) => {
 
         await mutation({
             variables: {
                 input: {
-                    plantId,
-                    operationId,
+                    id,
                 },
             },
             update(cache, { data }) {
@@ -93,7 +86,7 @@ export function useDeleteOperation(plantId: string) {
                     variables: { plantId },
                     data: {
                         plantOperations: existing.plantOperations.filter(
-                            (op) => op.operationId !== operationId,
+                            (op) => op.operationId !== id,
                         ),
                     },
                 });
@@ -101,11 +94,11 @@ export function useDeleteOperation(plantId: string) {
         });
     };
 
-    return { deleteOperation, loading };
+    return { deleteOperation };
 }
 
 export function useUpsertMargin(plantId: string) {
-    const [mutation, { loading }] = useMutation<UpsertOperationMarginsResponse, UpsertOperationMarginsVariables>(UPSERT_OPERATION_MARGINS, {
+    const [mutation] = useMutation<UpsertOperationMarginsResponse, UpsertOperationMarginsVariables>(UPSERT_OPERATION_MARGINS, {
         update(cache, { data }) {
             if (!data) return;
 
@@ -150,7 +143,7 @@ export function useUpsertMargin(plantId: string) {
         });
     };
 
-    return { upsertMargin, loading };
+    return { upsertMargin };
 }
 
 
