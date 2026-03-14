@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Margin, Operation } from '../../context/types';
 import { MarginCell } from './MarginCell';
 
@@ -7,7 +8,11 @@ interface OperRowProps {
   onMarginChange: (operationId: string, margin: Margin) => Promise<void>;
 }
 
-export function OperRow({ operation, onDelete, onMarginChange }: OperRowProps) {
+export const OperRow = memo(function OperRow({
+  operation,
+  onDelete,
+  onMarginChange,
+}: OperRowProps) {
   return (
     <tr className="hover:bg-slate-50 transition-colors">
       <td className="px-4 py-3 font-medium text-slate-700">{operation.operationName}</td>
@@ -35,4 +40,4 @@ export function OperRow({ operation, onDelete, onMarginChange }: OperRowProps) {
       </td>
     </tr>
   );
-}
+});

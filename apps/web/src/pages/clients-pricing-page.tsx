@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useOperations } from '../context/OperationsContext';
 import { Sidebar } from '../components/Sidebar';
 import { Header } from '../components/Header';
 import { Table } from '../components/Table';
 import { AddOperationModal } from '../components/Modal/AddOperationModal';
+import { Margin } from '../context/types';
 
 export function ClientsPricingPage() {
   const {
@@ -21,6 +22,24 @@ export function ClientsPricingPage() {
   } = useOperations();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleDelete = useCallback(
+    (operationId: string) => {
+      return deleteOperation(operationId);
+    },
+    [deleteOperation],
+  );
+
+  const handleMarginChange = useCallback(
+    (operationId: string, margin: Margin) => {
+      return upsertMargin(operationId, margin);
+    },
+    [upsertMargin],
+  );
+
+  const handleAddOperation = useCallback((name: string) => {
+    return createOperation(name);
+  }, []);
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50 font-sans text-slate-700 antialiased">
@@ -48,8 +67,8 @@ export function ClientsPricingPage() {
             <Table
               rows={operations}
               onAddOperation={() => setIsModalOpen(true)}
-              onDelete={deleteOperation}
-              onMarginChange={upsertMargin}
+              onDelete={handleDelete}
+              onMarginChange={handleMarginChange}
             />
           )}
         </section>
@@ -58,7 +77,7 @@ export function ClientsPricingPage() {
       <AddOperationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onAdd={createOperation}
+        onAdd={handleAddOperation}
       />
     </div>
   );
