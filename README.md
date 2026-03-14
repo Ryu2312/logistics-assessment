@@ -46,22 +46,15 @@ Asegúrate de tener instalado:
    pnpm install
    ```
 
-3. **Configurar variables de entorno:**
-
-   **Para el backend** (`apps/api/.env`):
+3. **Configurar variables de entorno:**(`.env`)
 
    ```env
    DATABASE_URL=postgresql://user:password@localhost:5432/logistics_db
+   VITE_GRAPHQL_URL=http://localhost:3000/graphql
    PORT=3000
    HOST=0.0.0.0
    CORS_ORIGIN=http://localhost:5173
    NODE_ENV=development
-   ```
-
-   **Para el frontend** (`apps/web/.env.local`):
-
-   ```env
-   VITE_GRAPHQL_URL=http://localhost:3000/graphql
    ```
 
 4. **¡Listo! Ejecuta el proyecto:**
